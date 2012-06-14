@@ -1,5 +1,3 @@
-package SAN;
-
 final public class Matrix {
     private final int M;             // number of rows
     private final int N;             // number of columns

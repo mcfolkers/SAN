@@ -215,28 +215,28 @@ class StudentBoardTrans
 	Matrix rotated_xyz = xyz.times(rot);
 	rotated_xyz.show();*/
 	//System.out.println(this.board.toCartesian(row, column));
-	double x = /*this.getCoordX() -*/ this.board.sur_x - (row * this.board.delta_x) - (this.board.delta_x / 2); 
-	double y = /*this.getCoordY() +*/ this.board.sur_y + (column * this.board.delta_y) + (this.board.delta_y /2);
+	double x = /*this.getCoordX() -*/ this.board.sur_x + ((7-row) * this.board.delta_x) + (this.board.delta_x / 2); 
+	double y = /*this.getCoordY() +*/ this.board.sur_y + ((7-column) * this.board.delta_y) + (this.board.delta_y /2);
 //System.out.println(this.getCoordX()+"	- "+this.board.sur_x+"	- ("+row+" * "+this.board.delta_x+") - "+" ("+this.board.delta_x+" / "+2+")	");
 //System.out.println(this.getCoordY()+"	+ "+this.board.sur_y+"	+ ("+column+" * "+this.board.delta_y+") + "+" ("+this.board.delta_y+" / "+2+")	"); 
 double[][] m = {	{ x },
 			{ y  },
 			{ 0.0 }};
 	double t = Math.toRadians(this.board.theta);
-	double[][] r_z = { { Math.cos(t), Math.sin(t), 0.0 },
-			 { -Math.sin(t), Math.cos(t), 0.0 },
+	double[][] r_z = { { Math.cos(t), -Math.sin(t), 0.0 },
+			 { Math.sin(t), Math.cos(t), 0.0 },
 			 { 0.0, 0.0, 1.0} };
 	Matrix xyz = new Matrix(m);
 	Matrix rot = new Matrix(r_z);
-	Matrix rotated_xyz = rot.times(m);
+	Matrix rotated_xyz = rot.times(xyz);
 	//rotated_xyz.show();
 	//System.out.println("\nTESTING X/Y	:	"+boardLocation.row+"	"+boardLocation.column+"\n");
 	//System.out.println("\nCartesian String	:	"+this.board.toCartesian(this.pos));
 	//System.out.println("\nCartesian Coords	:	"+this.board.toCartesian(boardLocation.row,boardLocation.column));
     	Point xyz_point = new Point();
-	xyz_point.x = rotated_xyz.data[0][0]+this.getCoordX();
-	xyz_point.y = rotated_xyz.data[0][1]+this.getCoordY();
-	xyz_point.z = rotated_xyz.data[0][2]+this.getCoordZ();
+	xyz_point.x = (-1) * rotated_xyz.data[0][0] + this.getCoordX();
+	xyz_point.y = rotated_xyz.data[1][0]+this.getCoordY();
+	xyz_point.z = rotated_xyz.data[2][0]+this.getCoordZ();
 //xyz_point.x = 23;
 //	xyz_point.y = 23;
 //	xyz_point.z = 23;
