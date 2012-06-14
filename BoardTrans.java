@@ -215,8 +215,8 @@ class StudentBoardTrans
 	Matrix rotated_xyz = xyz.times(rot);
 	rotated_xyz.show();*/
 	//System.out.println(this.board.toCartesian(row, column));
-	double x = /*this.getCoordX() -*/ this.board.sur_x + ((7-row) * this.board.delta_x) + (this.board.delta_x / 2); 
-	double y = /*this.getCoordY() +*/ this.board.sur_y + ((7-column) * this.board.delta_y) + (this.board.delta_y /2);
+	double x = /*this.getCoordX() -*/ this.board.sur_x + ((7-column) * this.board.delta_x) + (this.board.delta_x / 2); 
+	double y = /*this.getCoordY() +*/ this.board.sur_y + ((7-row) * this.board.delta_y) + (this.board.delta_y /2);
 //System.out.println(this.getCoordX()+"	- "+this.board.sur_x+"	- ("+row+" * "+this.board.delta_x+") - "+" ("+this.board.delta_x+" / "+2+")	");
 //System.out.println(this.getCoordY()+"	+ "+this.board.sur_y+"	+ ("+column+" * "+this.board.delta_y+") + "+" ("+this.board.delta_y+" / "+2+")	"); 
 double[][] m = {	{ x },
