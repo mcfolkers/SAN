@@ -1,3 +1,5 @@
+package SAN;
+
 final public class Matrix {
     private final int M;             // number of rows
     private final int N;             // number of columns
@@ -162,8 +164,20 @@ final public class Matrix {
 
 
 
-    // test client
+    // test client (x=10, y=30 = |/ -> |-) (x=30, y=-10)
     /*public static void main(String[] args) {
+    	double[][] m = { { 10.0 },
+   			 { 30.0 },
+   			 { 1.0	} };
+   	double t = Math.toRadians(90.0);
+   	double[][] r_z = { { Math.cos(t), Math.sin(t), 0.0 },
+   			 { -Math.sin(t), Math.cos(t), 0.0 },
+   			 { 0.0, 0.0, 1.0} };
+   	Matrix xyz = new Matrix(m);
+   	Matrix rot = new Matrix(r_z);
+   	Matrix rotated_xyz = rot.times(xyz);
+   	rotated_xyz.show();*/
+    	/*
         double[][] m = { { 5.0, 0.0, 0.0 },
 			 { 0.0, 5.0, 0.0 },
 			 { 0.0, 0.0, 1.0} };
@@ -214,6 +228,6 @@ final public class Matrix {
         System.out.println();
 
         A.times(x).show();
-        
-    }*/
+        */
+    //}
 }
