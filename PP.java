@@ -45,7 +45,7 @@ public class PP {
   private static double CLOSED_GRIP=0;
 
   public static void main(String[] args){
-    Vector p<GripperPosition> = new Vector<GripperPosition>();
+    Vector<GripperPosition> p = new Vector<GripperPosition>();
     ChessBoard b;
     String computerFrom, computerTo;
 
@@ -107,11 +107,11 @@ public class PP {
     StudentBoardTrans studentBoardTrans = new StudentBoardTrans(from);
 	
 	
-	fromColumn = studentBoardTrans.boardLocation.column;
-    fromRow = studentBoardTrans.boardLocation.row;
-	fromX = studentBoardTrans.boardLocation.x ; //x,y,z oproepen, moet nog een return voor komen
-	fromY = studentBoardTrans.board.y;
-	fromZ = studentBoardTrans.board.z;
+	//fromColumn = studentBoardTrans.boardLocation.column;
+    //fromRow = studentBoardTrans.boardLocation.row;
+	//fromX = studentBoardTrans.boardLocation.x ; //x,y,z oproepen, moet nog een return voor komen
+	//fromY = studentBoardTrans.board.y;
+	//fromZ = studentBoardTrans.board.z;
 	//Hiermee zou ik de board column en row moeten krijgen, de juiste positie van het stuk dat we gaan verplaatsen
 	
     
@@ -120,8 +120,8 @@ public class PP {
     
      Point tempPoint;
      GripperPosition temp;
-     tempPoint = new Point(x-coordinate, y-coordinate, z-coordinate);
-     temp = new GripperPosition(tempPoint, angle, CLOSED_GRIP/OPEN_GRIP);
+     //tempPoint = new Point(x-coordinate, y-coordinate, z-coordinate);
+     //temp = new GripperPosition(tempPoint, angle, CLOSED_GRIP/OPEN_GRIP);
      
 	 //Now you only have to add it at the end of Vector p.
      
@@ -137,5 +137,10 @@ public class PP {
      */
     System.out.println("**** In movoToGarbage"); 
 
+  }
+  
+  private static void lowPath(String from, String to, 
+          ChessBoard b, Vector<GripperPosition> p) {
+	  
   }
 }
