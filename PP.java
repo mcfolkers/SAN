@@ -105,20 +105,26 @@ public class PP {
 
     // Use the boardLocation and toCartesian methods you wrote:
     StudentBoardTrans studentBoardTrans = new StudentBoardTrans(from);
+	
+	
+	fromColumn = studentBoardTrans.boardLocation.column;
+    fromRow = studentBoardTrans.boardLocation.row;
+	fromX = studentBoardTrans.boardLocation.x ; //x,y,z oproepen, moet nog een return voor komen
+	fromY = studentBoardTrans.board.y;
+	fromZ = studentBoardTrans.board.z;
+	//Hiermee zou ik de board column en row moeten krijgen, de juiste positie van het stuk dat we gaan verplaatsen
+	
+    
 
-    /* Example of getting the columns and the row indices:
-     * fromColumn = studentBoardTrans.boardLocation.column;
-     * fromRow = studentBoardTrans.boardLocation.row;
-     */
 
-
-    /* Example of adding a gripperposition to Vector p.
-     * Point tempPoint;
-     * GripperPosition temp;
-     * tempPoint = new Point(x-coordinate, y-coordinate, z-coordinate);
-     * temp = new GripperPosition(tempPoint, angle, CLOSED_GRIP/OPEN_GRIP);
-     * Now you only have to add it at the end of Vector p.
-     */
+    
+     Point tempPoint;
+     GripperPosition temp;
+     tempPoint = new Point(x-coordinate, y-coordinate, z-coordinate);
+     temp = new GripperPosition(tempPoint, angle, CLOSED_GRIP/OPEN_GRIP);
+     
+	 //Now you only have to add it at the end of Vector p.
+     
   }
 
   private static void moveToGarbage(String to, ChessBoard b, Vector<GripperPosition> g) {
