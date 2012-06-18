@@ -8,4 +8,8 @@ public class GripperPosition {
 		// TODO Auto-generated method stub
 		
 	}
+	GripperPosition(Point p, double a, double pos) {
+		// TODO Auto-generated method stub
+		
+	}
 }

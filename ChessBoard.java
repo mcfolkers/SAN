@@ -43,7 +43,7 @@ public class ChessBoard {
 		
 	}
 
-	public String toCartesian(String pos) {
+	public Point toCartesian(String pos) {
 		// TODO Auto-generated method stub
 		return null;
 	}

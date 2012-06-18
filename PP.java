@@ -113,18 +113,119 @@ public class PP {
 	//fromY = studentBoardTrans.board.y;
 	//fromZ = studentBoardTrans.board.z;
 	//Hiermee zou ik de board column en row moeten krijgen, de juiste positie van het stuk dat we gaan verplaatsen
-	
-    
+    //p.add(toSafeHeight(b.toCartesian(from), b.theta));
+
+ //p.add(new GripperPosition(studentBoardTrans.toCartesian(from), b.theta, SAFE_HEIGHT));
+Point temp = studentBoardTrans.toCartesian(studentBoardTrans.boardLocation.column,studentBoardTrans.boardLocation.row);
+//1
+temp.z = SAFE_HEIGHT;
+ p.add(new GripperPosition(temp, b.theta,OPEN_GRIP ));
+
+//2
+temp.z = LOW_HEIGHT;
+ p.add(new GripperPosition(temp, b.theta,OPEN_GRIP ));
+
+//3
+try {
+temp.z = b.getHeight(from) /2;
+} catch(ChessBoard.NoPieceAtPositionException e) {}
+ p.add(new GripperPosition(temp, b.theta,OPEN_GRIP ));
+
+//4
+try{
+temp.z = b.getHeight(from) /2;
+} catch(ChessBoard.NoPieceAtPositionException e) {}
+ p.add(new GripperPosition(temp, b.theta,CLOSED_GRIP ));
+
+//5
+temp.z = SAFE_HEIGHT;
+ p.add(new GripperPosition(temp, b.theta,CLOSED_GRIP ));
+
+//6
+studentBoardTrans = new StudentBoardTrans(to);
+temp = studentBoardTrans.toCartesian(studentBoardTrans.boardLocation.column,studentBoardTrans.boardLocation.row);
+temp.z = SAFE_HEIGHT;
+ p.add(new GripperPosition(temp, b.theta,CLOSED_GRIP ));
+
+//7
+try{
+temp.z = LOW_HEIGHT + (b.getHeight(to) / 2);
+} catch(ChessBoard.NoPieceAtPositionException e) {}
+ p.add(new GripperPosition(temp, b.theta,CLOSED_GRIP ));
+
+//8
+try{
+temp.z = (LOW_HEIGHT /2) + (b.getHeight(to) /2);
+} catch(ChessBoard.NoPieceAtPositionException e) {}
+ p.add(new GripperPosition(temp, b.theta,CLOSED_GRIP ));
+
+//9
+try{
+temp.z = b.getHeight(to) /2;
+} catch(ChessBoard.NoPieceAtPositionException e) {}
+ p.add(new GripperPosition(temp, b.theta,OPEN_GRIP ));
+
+//10
+temp.z = SAFE_HEIGHT;
+ p.add(new GripperPosition(temp, b.theta,OPEN_GRIP ));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+	p.add(toPosition(b.toCartesian(from), b.theta));
+	p.add(openGrip(b.toCartesian(from), b.theta));
+	p.add(toLowHeight(b.toCartesian(from), b.theta));
+	p.add(closeGrip(b.toCartesian(from), b.theta));
+	p.add(toSafeHeight(b.toCartesian(from), b.theta));
+	p.add(toPosition(b.toCartesian(to), b.theta));
+	p.add(toLowHeight(b.toCartesian(to), b.theta));
+	p.add(openGrip(b.toCartesian(to), b.theta));
+	p.add(toSafeHeight(b.toCartesian(to), b.theta));
+    */
 
 
     
-     Point tempPoint;
-     GripperPosition temp;
+     //Point tempPoint;
+    // GripperPosition temp;
      //tempPoint = new Point(x-coordinate, y-coordinate, z-coordinate);
      //temp = new GripperPosition(tempPoint, angle, CLOSED_GRIP/OPEN_GRIP);
      
 	 //Now you only have to add it at the end of Vector p.
      
+  }
+  
+  
+  static GripperPosition openGrip(Point point, double angle) {
+	  return (new GripperPosition(point, angle, OPEN_GRIP));
+  }
+  static GripperPosition closeGrip(Point point, double angle) {
+	  return (new GripperPosition(point, angle, CLOSED_GRIP));
+  }
+  static GripperPosition toSafeHeight(Point point, double angle) {
+	  return (new GripperPosition(point, angle, SAFE_HEIGHT));
+  }
+  static GripperPosition toLowHeight(Point point, double angle) {
+	  return (new GripperPosition(point, angle, LOW_HEIGHT));
+  }
+  static GripperPosition toPosition(Point point, double angle) {
+	  return (new GripperPosition(point, angle, SAFE_HEIGHT));
   }
 
   private static void moveToGarbage(String to, ChessBoard b, Vector<GripperPosition> g) {
@@ -135,12 +236,98 @@ public class PP {
      * piece, and if so call this function to remove the white piece from
      * the board first.
      */
+StudentBoardTrans studentBoardTrans = new StudentBoardTrans("h4");
+	  Point garbage = studentBoardTrans.toCartesian(studentBoardTrans.boardLocation.column,studentBoardTrans.boardLocation.row);
+		garbage.x += 50;
+studentBoardTrans = new StudentBoardTrans(to);
     System.out.println("**** In movoToGarbage"); 
+    //highPath(to, "offboard", b, g)
+    //lowPath()
+	
+	Point temp = studentBoardTrans.toCartesian(studentBoardTrans.boardLocation.column,studentBoardTrans.boardLocation.row);
+//1
+temp.z = SAFE_HEIGHT;
+ g.add(new GripperPosition(temp, b.theta,OPEN_GRIP ));
 
+//2
+temp.z = LOW_HEIGHT;
+ g.add(new GripperPosition(temp, b.theta,OPEN_GRIP ));
+
+//3
+try {
+temp.z = b.getHeight(to) /2;
+} catch(ChessBoard.NoPieceAtPositionException e) {}
+ g.add(new GripperPosition(temp, b.theta,OPEN_GRIP ));
+
+//4
+try{
+temp.z = b.getHeight(to) /2;
+} catch(ChessBoard.NoPieceAtPositionException e) {}
+ g.add(new GripperPosition(temp, b.theta,CLOSED_GRIP ));
+
+//5
+temp.z = SAFE_HEIGHT;
+ g.add(new GripperPosition(temp, b.theta,CLOSED_GRIP ));
+
+//6
+ g.add(new GripperPosition(garbage, b.theta,CLOSED_GRIP ));
+
+//7
+try{
+temp.z = LOW_HEIGHT + (b.getHeight(to) / 2);
+} catch(ChessBoard.NoPieceAtPositionException e) {}
+ g.add(new GripperPosition(garbage, b.theta,CLOSED_GRIP ));
+
+//8
+try{
+temp.z = (LOW_HEIGHT /2) + (b.getHeight(to) /2);
+} catch(ChessBoard.NoPieceAtPositionException e) {}
+ g.add(new GripperPosition(garbage, b.theta,CLOSED_GRIP ));
+
+//9
+try{
+temp.z = b.getHeight(to) /2;
+} catch(ChessBoard.NoPieceAtPositionException e) {}
+ g.add(new GripperPosition(garbage, b.theta,OPEN_GRIP ));
+
+//10
+temp.z = SAFE_HEIGHT;
+ g.add(new GripperPosition(garbage, b.theta,OPEN_GRIP ));
+    
+
+
+	    //p.add(toSafeHeight(b.toCartesian(to), b.theta));
+	    //path plan
+	/*	p.add(toPosition(b.toCartesian(to), b.theta));
+		p.add(openGrip(b.toCartesian(to), b.theta));
+		//p.add(toLowHeight(b.toCartesian(from), b.theta));
+		p.add(closeGrip(b.toCartesian(to), b.theta));
+		//p.add(toSafeHeight(b.toCartesian(to), b.theta));
+		//path plan
+		p.add(toPosition(garbage, b.theta));
+		//p.add(toLowHeight(garbage, b.theta));
+		p.add(openGrip(garbage, b.theta));
+		//p.add(toSafeHeight(garbage, b.theta));
+
+	
+*/	
   }
   
   private static void lowPath(String from, String to, 
           ChessBoard b, Vector<GripperPosition> p) {
-	  
+	  /*
+	    //p.add(toSafeHeight(b.toCartesian(from), b.theta));
+	    //path plan
+		p.add(toPosition(b.toCartesian(from), b.theta));
+		p.add(openGrip(b.toCartesian(from), b.theta));
+		//p.add(toLowHeight(b.toCartesian(from), b.theta));
+		p.add(closeGrip(b.toCartesian(from), b.theta));
+		//p.add(toSafeHeight(b.toCartesian(from), b.theta));
+		//path plan
+		p.add(toPosition(b.toCartesian(to), b.theta));
+		//p.add(toLowHeight(b.toCartesian(to), b.theta));
+		p.add(openGrip(b.toCartesian(to), b.theta));
+		//p.add(toSafeHeight(b.toCartesian(to), b.theta));
+	*/
   }
 }
