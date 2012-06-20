@@ -189,6 +189,10 @@ class StudentBoardTrans
 		return side;
 	}
   
+	public Point toCartesian(String pos)
+	{
+		return toCartesian(boardLocation.getCol(pos.charAt(0)), boardLocation.getRow(pos.charAt(1)));
+	}
 	public Point toCartesian(int column, int row)
   {
     // write this function
@@ -268,6 +272,10 @@ double[][] m = {	{ x },
   	}
 	public int getRow(char row) {
 		return Integer.parseInt(String.valueOf(row))-1;
+	}
+	public String getPos(int column, int row) {
+		String columns = "abcdefgh";
+		return (columns.charAt(column) +""+ row);
 	}
 }
 }
