@@ -83,13 +83,14 @@ static double getGripHeight(String pos, ChessBoard b) {
 private static void highPath(String from, String to, 
 ChessBoard b, Vector<GripperPosition> p) 
 {
-	System.out.println("**** In high path"); 
-    StudentBoardTrans studentBoardTrans = new StudentBoardTrans(from);
-	studentBoardTrans.board.theta = b.theta;
-	Point temp = studentBoardTrans.toCartesian(studentBoardTrans.boardLocation.column,studentBoardTrans.boardLocation.row);
+	System.out.println("**** In high path");
+
+	StudentBoardTrans studentBoardTrans = new StudentBoardTrans(b, from);
+	
+	Point temp = studentBoardTrans.getPositionCoords();
 	
 	//The safest height for placing a gripping is always grip/piece height and height of surface
-	double safePieceHeight = getGripHeight(from, b) + b.board_thickness;
+	double safePieceHeight = studentBoardTrans.getSafePieceHeight();
 	
 	//1 -- FROM -- UP-HIGH -- OPEN
 	temp.z = SAFE_HEIGHT;
@@ -105,9 +106,10 @@ ChessBoard b, Vector<GripperPosition> p)
 	//5 -- FROM -- UP-HIGH -- CLOSED
 	temp.z = SAFE_HEIGHT;
 	p.add(new GripperPosition(temp, b.theta,CLOSED_GRIP ));
+	
 	//6 -- TO -- UP-HIGH -- CLOSED
-	studentBoardTrans = new StudentBoardTrans(to);
-	temp = studentBoardTrans.toCartesian(studentBoardTrans.boardLocation.column,studentBoardTrans.boardLocation.row);
+	studentBoardTrans.setPosition(to);
+	temp = studentBoardTrans.getPositionCoords();
 	temp.z = SAFE_HEIGHT;
 	p.add(new GripperPosition(temp, b.theta,CLOSED_GRIP ));
 	//7 -- TO -- SEMI-LOW -- CLOSED
@@ -151,18 +153,15 @@ static GripperPosition toPosition(Point point, double angle)
 
 private static void moveToGarbage(String to, ChessBoard b, Vector<GripperPosition> g) 
 {
-	StudentBoardTrans studentBoardTrans = new StudentBoardTrans("h4");
-	Point garbage = studentBoardTrans.toCartesian(studentBoardTrans.boardLocation.column,studentBoardTrans.boardLocation.row);
-	garbage.x += 100;
-	studentBoardTrans = new StudentBoardTrans(to);
-	studentBoardTrans.board.theta = b.theta;
-    System.out.println("**** In movoToGarbage");
-
-	Point temp = studentBoardTrans.toCartesian(studentBoardTrans.boardLocation.column,studentBoardTrans.boardLocation.row);
-
-
+	System.out.println("**** In movoToGarbage");
+	StudentBoardTrans studentBoardTrans = new StudentBoardTrans(b, to);
 	
-	double safePieceHeight = b.board_thickness + getGripHeight(to, b);
+	Point garbage = studentBoardTrans.toCartesian("h4");
+	garbage.x += 100;
+
+	Point temp = studentBoardTrans.getPositionCoords();
+	
+	double safePieceHeight = studentBoardTrans.getSafePieceHeight();
 	
 	//1 -- TO -- UP-HIGH -- OPEN
 	temp.z = SAFE_HEIGHT;
@@ -178,6 +177,7 @@ private static void moveToGarbage(String to, ChessBoard b, Vector<GripperPositio
 	//5 -- TO -- UP-HIGH -- CLOSED
 	temp.z = SAFE_HEIGHT;
 	g.add(new GripperPosition(temp, b.theta,CLOSED_GRIP ));
+	
 	//6 -- GARBAGE -- UP-HIGH -- CLOSED
 	garbage.z = SAFE_HEIGHT;
 	g.add(new GripperPosition(garbage, b.theta,CLOSED_GRIP ));
@@ -315,4 +315,4 @@ ChessBoard b, Vector<GripperPosition> p)
 	//return success
 	return true;
 }
-}//what the hell is this doing here?
+}

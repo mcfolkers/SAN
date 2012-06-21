@@ -137,8 +137,9 @@ boardTrans.getY() +
 class StudentBoardTrans
 {
   public ChessBoard board; // our board
-  public String pos; // the position we're going to examine
+  public String position, pos; // the position we're going to examine
   public BoardLocation boardLocation;
+	private Point loc;
 
   public StudentBoardTrans(String position)
   {
@@ -146,9 +147,34 @@ class StudentBoardTrans
     pos = position;
     boardLocation = new BoardLocation(position);
   }
-  public StudentBoardTrans(ChessBoard board) {
-	  this.board = board;
-  }
+	
+	public StudentBoardTrans(ChessBoard board) {
+		this.board = board;
+	}
+	public StudentBoardTrans(ChessBoard board, String position) {
+		this.setPosition(position);
+		this.board = board;
+	}
+
+	Point getPositionCoords() {
+		return toCartesian(this.pos);
+	}
+	//GET & SET position
+	String getPosition() {
+		return this.pos;
+	}
+	void setPosition(String position) {
+		this.pos = position;
+		boardLocation = new BoardLocation(position);
+	}
+
+	//GET & SET theta
+	double getTheta() {
+		return this.board.theta;
+	}
+	void setTheta(double theta) {
+		this.board.theta = theta;
+	}
 
 	public double getX() {
 		return this.board.delta_x;
@@ -165,11 +191,14 @@ class StudentBoardTrans
 		}
 		return height;
 	}
-	
+
+	double getSafePieceHeight() {
+		return getSafePieceHeight(this.pos);
+	}
 	double getSafePieceHeight(String pos) {
 		double height = 0.0;
 		try { //Gripping height is two thirds of the piece to be gripped
-			height = this.board.getHeight(pos) - (this.board.getHeight(pos) / 3);
+			height = this.board.board_thickness + this.board.getHeight(pos) - (this.board.getHeight(pos) / 3);
 		} catch (ChessBoard.NoPieceAtPositionException e) {
 			System.out.println(e);
 			System.exit(1);
@@ -177,13 +206,6 @@ class StudentBoardTrans
 		return height;
 	}
 	
-	double getTheta() {
-		return this.board.theta;
-	}
-	void setTheta(double theta) {
-		this.board.theta = theta;
-	}
-
 	double getCoordX() {
 		return this.board.coords.x;
 	}
