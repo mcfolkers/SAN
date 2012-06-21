@@ -203,47 +203,69 @@ static Vector<BoardLocation> getPlannedPath(String from, String to, ChessBoard b
 	BoardLocation node = new BoardLocation(end.column, end.row);
 	BoardLocation bestNode = end;
 	BoardLocation prevNode = bestNode;
+	BoardLocation tempNode = prevNode;
 	Vector<BoardLocation> n = new Vector<BoardLocation>();
 	DistanceMatrix dm = new DistanceMatrix();
 	//as long as the node isn't pathed to the from node
-	while(bestNode.column != start.column && bestNode.row != start.row && !dm.notPossible(to))
-	{
-		node = new BoardLocation(bestNode.column+1, bestNode.row);
+	int i = 0;
+	while((bestNode.column != start.column || bestNode.row != start.row) && !dm.notPossible(to) && i < 100)
+	{ i++;
+		node = new BoardLocation(tempNode.column+1, tempNode.row);
 		if(isValid(node.column, node.row, b)) 
 		{
 			bestNode = diff(node.column, start.column) + diff(node.row, start.row) >
 			diff(bestNode.column, start.column) + diff(bestNode.row, start.row) ?
 			bestNode : node;
 		}
-		node = new BoardLocation(bestNode.column-1, bestNode.row);
+		node = new BoardLocation(tempNode.column-1, tempNode.row);
 		if(isValid(node.column, node.row,b )) 
 		{
 			bestNode = diff(node.column, start.column) + diff(node.row, start.row) >
 			diff(bestNode.column, start.column) + diff(bestNode.row, start.row) ?
 			bestNode : node;
 		}
-		node = new BoardLocation(bestNode.column, bestNode.row+1);
+		node = new BoardLocation(tempNode.column, tempNode.row+1);
 		if(isValid(node.column, node.row, b)) 
 		{
 			bestNode = diff(node.column, start.column) + diff(node.row, start.row) >
 			diff(bestNode.column, start.column) + diff(bestNode.row, start.row) ?
 			bestNode : node;
 		}
-		node = new BoardLocation(bestNode.column+1, bestNode.row-1);
+		node = new BoardLocation(tempNode.column, tempNode.row-1);
 		if(isValid(node.column, node.row, b)) 
 		{
 			bestNode = diff(node.column, start.column) + diff(node.row, start.row) >
 			diff(bestNode.column, start.column) + diff(bestNode.row, start.row) ?
 			bestNode : node;
+			//if ((diff(node.column, start.column) == 1 || diff(node.row, start.row) == 1) && (node.column != start.column || node.row != start.row)) bestNode
 		}
 		  
-		if(bestNode.column != prevNode.column && bestNode.row != prevNode.row)
-		{
+		if((bestNode.column != prevNode.column && prevNode.row != bestNode.row))
+		{System.out.println("in condition 1");
 			//new pos
-			n.add(bestNode);
+			n.add(prevNode);
 			prevNode = bestNode;
 		}
+		if(bestNode.column != start.column && bestNode.row == start.row && diff(bestNode.column, start.column)==1){System.out.println("in condition 2");
+			n.add(bestNode);
+		} else if (bestNode.column == start.column && bestNode.row != start.row && diff(bestNode.row, start.row)==1){System.out.println("in condition 3");
+			n.add(bestNode);
+		}System.out.println("END");
+		//if(bestNode.column == start.column && bestNode == start.column)
+		//{
+		//	n.add(bestNode);
+		//}
+		tempNode = bestNode;
+		//System.out.println(bestNode.column+","+bestNode.row);
 	}
+	if(bestNode.column != start.column && bestNode.row == start.row && diff(bestNode.column, start.column)==1){
+			System.out.println("in condition 2");
+			n.add(bestNode);
+		} else if (bestNode.column == start.column && bestNode.row != start.row && diff(bestNode.row, start.row)==1){
+			System.out.println("in condition 3");
+			n.add(bestNode);
+		}
+System.out.println("IN PATH");
 	return n;//positions;
 }
   
@@ -271,15 +293,14 @@ static double diff(double a, double b)
 private static boolean lowPath(String from, String to, 
 ChessBoard b, Vector<GripperPosition> p) 
 {
-	StudentBoardTrans sbt = new StudentBoardTrans(from);
-	Point f = sbt.toCartesian(from);
-	Point t = sbt.toCartesian(to);
+	System.out.println("**** In low path");
+	StudentBoardTrans sbt = new StudentBoardTrans(b, from);
 	
-	double safePieceHeight = b.board_thickness + getGripHeight(from, b);
+	double safePieceHeight = sbt.getSafePieceHeight();
 	
 	//FIND A PATH
 	Point temp = sbt.toCartesian(sbt.boardLocation.column,sbt.boardLocation.row);
-		Vector<BoardLocation> n = new Vector<BoardLocation>(getPlannedPath(from, to, b));
+	Vector<BoardLocation> n = new Vector<BoardLocation>(getPlannedPath(from, to, b));
 	
 	//IF NO PATH THEN FAIL
 	if (n.size() == 0)
@@ -296,7 +317,9 @@ ChessBoard b, Vector<GripperPosition> p)
 	//4 -- PATH -- SEMI-LOW -- CLOSED
 	for (int i = 0; i < n.size(); i++) 
 	{
-		p.add(new GripperPosition(sbt.toCartesian(n.elementAt(i).column, n.elementAt(i).row), b.theta, CLOSED_GRIP));
+		temp = sbt.toCartesian(n.elementAt(i).column, n.elementAt(i).row);
+		temp.z = LOW_HEIGHT + safePieceHeight;
+		p.add(new GripperPosition(temp, b.theta, CLOSED_GRIP));
 	}	
 	//5 -- TO -- SEMI-LOW -- CLOSED
 	sbt = new StudentBoardTrans(to);
@@ -308,7 +331,7 @@ ChessBoard b, Vector<GripperPosition> p)
 	p.add(new GripperPosition(temp, b.theta,CLOSED_GRIP ));
 	//7 -- TO -- GRIP-LOW -- OPEN
 	p.add(new GripperPosition(temp, b.theta,OPEN_GRIP ));
-	//6 -- TO -- SEMI-LOW -- OPEN	
+	//8 -- TO -- SEMI-LOW -- OPEN	
 	temp.z = LOW_HEIGHT + safePieceHeight;
 	p.add(new GripperPosition(temp, b.theta,OPEN_GRIP ));
 	

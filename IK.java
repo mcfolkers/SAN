@@ -104,6 +104,13 @@ private static void inverseKinematics(Vector<GripperPosition> p, Vector<JointVal
 		next move is out of range. We improved the code to prevent
 		unnecessary armswitches */
       		
+		if (pos.coords.x < 0 )
+        		RobotJoints.correctCartesian(pos, 0);
+      		else
+        		RobotJoints.correctCartesian(pos, 1);
+      			j.addElement(jointCalculation(pos));
+
+/*
 		if (pos.coords.x < -40 )
 		{
         		RobotJoints.correctCartesian(pos, 0);
@@ -113,6 +120,7 @@ private static void inverseKinematics(Vector<GripperPosition> p, Vector<JointVal
         		RobotJoints.correctCartesian(pos, 1);
 		}
       			j.addElement(jointCalculation(pos));
+*/
     	}
 }
 
