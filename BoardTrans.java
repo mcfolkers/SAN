@@ -146,6 +146,9 @@ class StudentBoardTrans
     pos = position;
     boardLocation = new BoardLocation(position);
   }
+  public StudentBoardTrans(ChessBoard board) {
+	  this.board = board;
+  }
 
 	public double getX() {
 		return this.board.delta_x;
@@ -161,6 +164,24 @@ class StudentBoardTrans
 			height = 0.0;
 		}
 		return height;
+	}
+	
+	double getSafePieceHeight(String pos) {
+		double height = 0.0;
+		try { //Gripping height is two thirds of the piece to be gripped
+			height = this.board.getHeight(pos) - (this.board.getHeight(pos) / 3);
+		} catch (ChessBoard.NoPieceAtPositionException e) {
+			System.out.println(e);
+			System.exit(1);
+		}
+		return height;
+	}
+	
+	double getTheta() {
+		return this.board.theta;
+	}
+	void setTheta(double theta) {
+		this.board.theta = theta;
 	}
 
 	double getCoordX() {

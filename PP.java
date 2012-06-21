@@ -69,10 +69,16 @@ public class PP
     /* after done write the gripper positions */
     GripperPosition.write(p);
 	}
-static double getGripHeight(String pos, ChessBoard b) throws ChessBoard.NoPieceAtPositionException {
+static double getGripHeight(String pos, ChessBoard b) {
 
-	return b.getHeight(pos) - (b.getHeight(pos) / 3);
-
+	double height = 0.0;
+	try { //Gripping height is two thirds of the piece to be gripped
+		height = b.getHeight(pos) - (b.getHeight(pos) / 3);
+	} catch (ChessBoard.NoPieceAtPositionException e) {
+		System.out.println(e);
+		System.exit(1);
+	}
+	return height;
 }
 private static void highPath(String from, String to, 
 ChessBoard b, Vector<GripperPosition> p) 
@@ -81,74 +87,38 @@ ChessBoard b, Vector<GripperPosition> p)
     StudentBoardTrans studentBoardTrans = new StudentBoardTrans(from);
 	studentBoardTrans.board.theta = b.theta;
 	Point temp = studentBoardTrans.toCartesian(studentBoardTrans.boardLocation.column,studentBoardTrans.boardLocation.row);
-	//1
+	
+	//The safest height for placing a gripping is always grip/piece height and height of surface
+	double safePieceHeight = getGripHeight(from, b) + b.board_thickness;
+	
+	//1 -- FROM -- UP-HIGH -- OPEN
 	temp.z = SAFE_HEIGHT;
 	p.add(new GripperPosition(temp, b.theta,OPEN_GRIP ));
-
-	//2
-try
-	{
-		temp.z = LOW_HEIGHT + getGripHeight(from, b);
-	} 
-	catch(ChessBoard.NoPieceAtPositionException e) 
-	{
-	}
-	//temp.z = LOW_HEIGHT + get;/////////////////////////////////////////////////////
+	//2 -- FROM -- SEMI-LOW -- OPEN
+	temp.z = LOW_HEIGHT + safePieceHeight;
 	p.add(new GripperPosition(temp, b.theta,OPEN_GRIP ));
-
-	//3
-	try 
-	{
-		temp.z = getGripHeight(from, b);
-	} 
-	catch(ChessBoard.NoPieceAtPositionException e) 
-	{
-	}
+	//3 -- FROM -- GRIP-LOW -- OPEN
+	temp.z = safePieceHeight;
 	p.add(new GripperPosition(temp, b.theta,OPEN_GRIP ));
-
-	//4
-	try
-	{
-		temp.z = getGripHeight(from, b);
-	} 
-	catch(ChessBoard.NoPieceAtPositionException e) {}
+	//4 -- FROM -- GRIP-LOW -- CLOSED
 	p.add(new GripperPosition(temp, b.theta,CLOSED_GRIP ));
-
-	//5
+	//5 -- FROM -- UP-HIGH -- CLOSED
 	temp.z = SAFE_HEIGHT;
 	p.add(new GripperPosition(temp, b.theta,CLOSED_GRIP ));
-
-	//6
+	//6 -- TO -- UP-HIGH -- CLOSED
 	studentBoardTrans = new StudentBoardTrans(to);
 	temp = studentBoardTrans.toCartesian(studentBoardTrans.boardLocation.column,studentBoardTrans.boardLocation.row);
 	temp.z = SAFE_HEIGHT;
 	p.add(new GripperPosition(temp, b.theta,CLOSED_GRIP ));
-
-	//7
-	try
-	{
-		temp.z = LOW_HEIGHT + getGripHeight(from, b);
-	} 
-	catch(ChessBoard.NoPieceAtPositionException e) {}
+	//7 -- TO -- SEMI-LOW -- CLOSED
+	temp.z = LOW_HEIGHT + safePieceHeight;
 	p.add(new GripperPosition(temp, b.theta,CLOSED_GRIP ));
-
-	//8
-	try
-	{
-		temp.z = (LOW_HEIGHT /2) + getGripHeight(to, b);;
-	} 
-	catch(ChessBoard.NoPieceAtPositionException e) {}
+	//8 -- TO -- GRIP-LOW -- CLOSED
+	temp.z = safePieceHeight;
 	p.add(new GripperPosition(temp, b.theta,CLOSED_GRIP ));
-
-	//9
-	try
-	{
-		temp.z = getGripHeight(to, b);
-	} 
-	catch(ChessBoard.NoPieceAtPositionException e) {}
+	//9 -- TO -- GRIP-LOW -- OPEN
 	p.add(new GripperPosition(temp, b.theta,OPEN_GRIP ));
-
-	//10
+	//10 -- TO -- UP-HIGH -- OPEN
 	temp.z = SAFE_HEIGHT;
 	p.add(new GripperPosition(temp, b.theta,OPEN_GRIP ));   
 }
@@ -187,92 +157,44 @@ private static void moveToGarbage(String to, ChessBoard b, Vector<GripperPositio
 	studentBoardTrans = new StudentBoardTrans(to);
 	studentBoardTrans.board.theta = b.theta;
     System.out.println("**** In movoToGarbage");
-	
+
 	Point temp = studentBoardTrans.toCartesian(studentBoardTrans.boardLocation.column,studentBoardTrans.boardLocation.row);
 
+
 	
-	//1
+	double safePieceHeight = b.board_thickness + getGripHeight(to, b);
+	
+	//1 -- TO -- UP-HIGH -- OPEN
 	temp.z = SAFE_HEIGHT;
 	g.add(new GripperPosition(temp, b.theta,OPEN_GRIP ));
-
-	//2
-	try
-	{
-		temp.z = LOW_HEIGHT + getGripHeight(to, b);
-	} 
-	catch(ChessBoard.NoPieceAtPositionException e) 
-	{
-	}
-	 g.add(new GripperPosition(temp, b.theta,OPEN_GRIP ));
-
-	//3
-	try 
-	{
-		temp.z = getGripHeight(to, b);
-	} 
-	catch(ChessBoard.NoPieceAtPositionException e) 
-	{
-	}
+	//2 -- TO -- SEMI-LOW -- OPEN
+	temp.z = LOW_HEIGHT + safePieceHeight;
 	g.add(new GripperPosition(temp, b.theta,OPEN_GRIP ));
-
-	//4
-	try
-	{
-		temp.z = getGripHeight(to, b);
-	} 
-	catch(ChessBoard.NoPieceAtPositionException e) 
-	{
-	}
+	//3 -- TO -- GRIP-LOW -- OPEN
+	temp.z = safePieceHeight;
+	g.add(new GripperPosition(temp, b.theta,OPEN_GRIP ));
+	//4 -- TO -- GRIP-LOW -- CLOSED
 	g.add(new GripperPosition(temp, b.theta,CLOSED_GRIP ));
-
-	//5
+	//5 -- TO -- UP-HIGH -- CLOSED
 	temp.z = SAFE_HEIGHT;
 	g.add(new GripperPosition(temp, b.theta,CLOSED_GRIP ));
-
-	//6
+	//6 -- GARBAGE -- UP-HIGH -- CLOSED
 	garbage.z = SAFE_HEIGHT;
 	g.add(new GripperPosition(garbage, b.theta,CLOSED_GRIP ));
-
-	//7
-	try
-	{
-		garbage.z = LOW_HEIGHT + getGripHeight(to, b);
-	} 
-	catch(ChessBoard.NoPieceAtPositionException e) 
-	{
-	}
+	//7 -- GARBAGE -- SEMI-LOW -- CLOSED
+	garbage.z = LOW_HEIGHT + safePieceHeight;
 	g.add(new GripperPosition(garbage, b.theta,CLOSED_GRIP ));
-
-	//8
-	try
-	{
-		garbage.z = getGripHeight(to, b);
-	} 
-	catch(ChessBoard.NoPieceAtPositionException e) 
-	{
-	}
-	g.add(new GripperPosition(garbage, b.theta,CLOSED_GRIP ));
-
-	//9
-	try
-	{
-		garbage.z = getGripHeight(to, b);
-	}
-	catch(ChessBoard.NoPieceAtPositionException e) 
-	{
-	}
+	//8 -- GARBAGE -- GRIP-LOW -- OPEN
+	//garbage.z = safePieceHeight;
+	//g.add(new GripperPosition(garbage, b.theta,CLOSED_GRIP ));
+	//9 -- GARBAGE -- SEMI-LOW -- OPEN
 	g.add(new GripperPosition(garbage, b.theta,OPEN_GRIP ));
-
-	//10
+	//10 -- GARBAGE -- UP-HIGH -- OPEN
 	garbage.z = SAFE_HEIGHT;
 	g.add(new GripperPosition(garbage, b.theta,OPEN_GRIP ));
-    
 }
 
-//static boolean notBlocked()
-//{
-//	
-//}
+
 static Vector<BoardLocation> getPlannedPath(String from, String to, ChessBoard b) 
 {
 	//start from goal node b
@@ -352,75 +274,45 @@ ChessBoard b, Vector<GripperPosition> p)
 	StudentBoardTrans sbt = new StudentBoardTrans(from);
 	Point f = sbt.toCartesian(from);
 	Point t = sbt.toCartesian(to);
-	  
+	
+	double safePieceHeight = b.board_thickness + getGripHeight(from, b);
+	
+	//FIND A PATH
 	Point temp = sbt.toCartesian(sbt.boardLocation.column,sbt.boardLocation.row);
 		Vector<BoardLocation> n = new Vector<BoardLocation>(getPlannedPath(from, to, b));
-if (n.size() == 0) return false;
-	//1
-	temp.z = LOW_HEIGHT;
-	p.add(new GripperPosition(temp, b.theta,OPEN_GRIP ));
+	
+	//IF NO PATH THEN FAIL
+	if (n.size() == 0)
+		return false;
 
-	//2
-	try 
-	{
-		temp.z = getGripHeight(from, b);
-	} 
-	catch(ChessBoard.NoPieceAtPositionException e) 
-	{
-	}
+	//1 -- FROM -- SEMI-LOW -- OPEN
+	temp.z = LOW_HEIGHT + safePieceHeight;
 	p.add(new GripperPosition(temp, b.theta,OPEN_GRIP ));
-
-	 //3
-	try
-	{
-		temp.z = getGripHeight(from, b);
-	} 
-	catch(ChessBoard.NoPieceAtPositionException e) 
-	{
-	}
+	//2 -- FROM -- GRIP-LOW -- OPEN
+	temp.z = safePieceHeight;
+	p.add(new GripperPosition(temp, b.theta,OPEN_GRIP ));
+	//3 -- FROM -- GRIP-LOW -- CLOSED
 	p.add(new GripperPosition(temp, b.theta,CLOSED_GRIP ));
-
+	//4 -- PATH -- SEMI-LOW -- CLOSED
 	for (int i = 0; i < n.size(); i++) 
 	{
 		p.add(new GripperPosition(sbt.toCartesian(n.elementAt(i).column, n.elementAt(i).row), b.theta, CLOSED_GRIP));
-	}
-	
-	//4
+	}	
+	//5 -- TO -- SEMI-LOW -- CLOSED
 	sbt = new StudentBoardTrans(to);
 	temp = sbt.toCartesian(sbt.boardLocation.column,sbt.boardLocation.row);
-	try
-	{
-		temp.z = (LOW_HEIGHT /2)+getGripHeight(to, b);
-	}
-	catch(ChessBoard.NoPieceAtPositionException e) 
-	{
-	}
+	temp.z = LOW_HEIGHT + safePieceHeight;
 	p.add(new GripperPosition(temp, b.theta,CLOSED_GRIP ));
-
-	//5
-	 try
-	{
-		temp.z = getGripHeight(to, b);
-	} 
-	catch(ChessBoard.NoPieceAtPositionException e) 
-	{
-	}
+	//6 -- TO -- GRIP-LOW -- CLOSED
+	temp.z = safePieceHeight;
 	p.add(new GripperPosition(temp, b.theta,CLOSED_GRIP ));
-
-	//6
-	try
-	{
-		temp.z = getGripHeight(to, b);
-	} 
-	catch(ChessBoard.NoPieceAtPositionException e) 
-	{
-	}
+	//7 -- TO -- GRIP-LOW -- OPEN
 	p.add(new GripperPosition(temp, b.theta,OPEN_GRIP ));
-//6
-	
-	
-	temp.z = LOW_HEIGHT;
+	//6 -- TO -- SEMI-LOW -- OPEN	
+	temp.z = LOW_HEIGHT + safePieceHeight;
 	p.add(new GripperPosition(temp, b.theta,OPEN_GRIP ));
-return true;
+	
+	//return success
+	return true;
 }
 }//what the hell is this doing here?
