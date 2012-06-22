@@ -45,17 +45,14 @@ class BoardTrans
 
     		try 
 		{  
-      			System.out.println("The dimensions of the squares on the
-			board are " + boardTrans.getX() + " by "
+      			System.out.println("The dimensions of the squares on the board are " + boardTrans.getX() + " by "
 			+ boardTrans.getY() + "mm");
   
-      			System.out.println("The x,y coordinates of the board are
-			" + boardTrans.getCoordX() + "," +
+      			System.out.println("The x,y coordinates of the board are" + boardTrans.getCoordX() + "," +
 			boardTrans.getCoordY() );
  			
 			System.out.println("The height of the piece at " +
-			boardTrans.pos + " is " + boardTrans.getHeight() + "
-			mm");
+			boardTrans.pos + " is " + boardTrans.getHeight() + "mm");
     
       			System.out.println("The color of the piece at " +
 			boardTrans.pos + " is " + boardTrans.getSide() );
@@ -70,10 +67,9 @@ class BoardTrans
 		boardTrans.boardLocation;
     		BoardLocation realLocation = new BoardLocation(boardTrans.pos);
 
-    		System.out.println("You think position " + boardTrans.pos + " is
-		at (" + location.column + "," + location.row + "), the correct
-		answer is (" + realLocation.column + "," + realLocation.row +
-		")");
+    		System.out.println("You think position " + boardTrans.pos + " is at (" 
+    		+ location.column + "," + location.row + "), the correct answer is (" 
+    				+ realLocation.column + "," + realLocation.row +")");
 
     		/* In order to be able to plan a path to certain position on the
 		board you have to know where this position is in Cartesian (i.d.
