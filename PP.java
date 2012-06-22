@@ -256,6 +256,10 @@ static Vector<BoardLocation> getPlannedPath(String from, String to, ChessBoard b
 	//start from goal node b
 	Vector<BoardLocation> n = new Vector<BoardLocation>();
 	DistanceMatrix dm = new DistanceMatrix();
+	dm.init(b);
+	dm.print();
+	dm.distanceTransform(b, to);
+	dm.print();
 	
 	BoardLocation goalNode = new BoardLocation(to);
 	BoardLocation currentNode = new BoardLocation(from);
@@ -275,7 +279,7 @@ static Vector<BoardLocation> getPlannedPath(String from, String to, ChessBoard b
 			n.add(savedNode);System.out.print(" "+getPos(savedNode)+" ");
 			n.add(goalNode);System.out.print(" "+getPos(goalNode)+" ");
 		}
-		if (currentNode.equals(prevNode)) {
+		if (equals(currentNode, prevNode)) {
 			System.out.println("\nCANT FIND PATH");
 			System.out.println("SAVED NODE	: "+getPos(savedNode));
 			System.out.println("CURRENT NODE	: "+getPos(currentNode));
@@ -303,7 +307,7 @@ static boolean isValid(int x, int y, ChessBoard b)
 		//something like this, if there is no piece then true.
 		String columns = "abcdefgh";
 		 
-		valid = b.hasPiece((columns.charAt(x) +""+ (y+1))) == false ? true : false;
+		valid = b.hasPiece(columns.charAt(x) +""+ (y+1)) == false ? true : false;
 		  
 	}
 	return valid;
