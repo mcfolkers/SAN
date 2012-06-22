@@ -258,6 +258,7 @@ static Vector<BoardLocation> getPlannedPath(String from, String to, ChessBoard b
 		}
 		if (currentNode.equals(prevNode)) {
 			System.out.println("CANT FIND PATH");
+			return n;
 		}
 		
 		prevNode = currentNode;
