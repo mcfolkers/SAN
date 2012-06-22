@@ -304,7 +304,7 @@ static Vector<BoardLocation> getPlannedPath(String from, String to, ChessBoard b
 			System.out.println("PREV NODE	: "+getPos(prevNode));
 			return n;
 		}
-		System.out.println("\n ("+getPos(currentNode)+") is not possible?	"+dm.notPossible(to));
+		System.out.println("\n ("+getPos(currentNode)+") is not possible?	"+dm.notPossible(from));
 		
 		prevNode = currentNode;
 	}
