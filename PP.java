@@ -249,15 +249,18 @@ static Vector<BoardLocation> getPlannedPath(String from, String to, ChessBoard b
 		currentNode = applyHeuristic(currentNode, goalNode, b);		  
 				
 		if (!isParallel(currentNode, savedNode)) {
-			n.add(savedNode);System.out.print(" "+savedNode+" ");
+			n.add(savedNode);System.out.print(" "+savedNode.column+","+savedNode.row+" ");
 			savedNode = prevNode;
 		}
 		if (currentNode.equals(goalNode)) {
-			n.add(savedNode);System.out.print(" "+savedNode+" ");
-			n.add(goalNode);System.out.print(" "+goalNode+" ");
+			n.add(savedNode);System.out.print(" "+savedNode.column+","+savedNode.row+" ");
+			n.add(goalNode);System.out.print(" "+goalNode.column+","+goalNode.row+" ");
 		}
 		if (currentNode.equals(prevNode)) {
-			System.out.println("CANT FIND PATH");
+			System.out.println("\nCANT FIND PATH");
+			System.out.println("SAVED NODE	: "+savedNode.column+","+savedNode.row);
+			System.out.println("CURRENT NODE	: "+currentNode.column+","+currentNode.row);
+			System.out.println("PREV NODE	: "+prevNode.column+","+prevNode.row);
 			return n;
 		}
 		
