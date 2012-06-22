@@ -224,6 +224,7 @@ static BoardLocation applyHeuristic(BoardLocation currentNode, BoardLocation goa
 		nextNode = heuristic(temp, goalNode) > heuristic(nextNode, goalNode)
 				? nextNode : temp;
 	}
+	System.out.println(" ("+getPos(nextNode)+") ("+getPos(temp)+") ");
 	//return lowest value nextNode or the currentNode
 	return nextNode;
 }
