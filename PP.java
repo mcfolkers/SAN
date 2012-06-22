@@ -205,6 +205,7 @@ static BoardLocation applyHeuristic(BoardLocation currentNode, BoardLocation goa
 	{
 		nextNode = currentNode;
 	}
+	System.out.println(" ("+getPos(nextNode)+") ("+getPos(temp)+") ");
 	//node = new BoardLocation(tempNode.column-1, tempNode.row);
 	temp = new BoardLocation(currentNode.column, currentNode.row+1);
 	if(isValid(currentNode.column, currentNode.row, b, goalNode)) 
@@ -212,12 +213,14 @@ static BoardLocation applyHeuristic(BoardLocation currentNode, BoardLocation goa
 		nextNode = heuristic(temp, goalNode) > heuristic(nextNode, goalNode)
 				? nextNode : temp;
 	}
+	System.out.println(" ("+getPos(nextNode)+") ("+getPos(temp)+") ");
 	temp = new BoardLocation(currentNode.column-1, currentNode.row);
 	if(isValid(currentNode.column, currentNode.row, b, goalNode)) 
 	{
 		nextNode = heuristic(temp, goalNode) > heuristic(nextNode, goalNode)
 				? nextNode : temp;
 	}
+	System.out.println(" ("+getPos(nextNode)+") ("+getPos(temp)+") ");
 	temp = new BoardLocation(currentNode.column, currentNode.row-1);
 	if(isValid(currentNode.column, currentNode.row, b, goalNode)) 
 	{
