@@ -200,10 +200,17 @@ static BoardLocation applyHeuristic(BoardLocation currentNode, BoardLocation goa
 	BoardLocation nextNode = new BoardLocation(currentNode.column, currentNode.row);
 	
 	// if current node col+1 is valid, that's the temp next node.
-	BoardLocation temp = new BoardLocation(currentNode.column+1, currentNode.row);
+	BoardLocation temp = new BoardLocation(currentNode.column, currentNode.row);
 	if(isValid(temp.column, temp.row, b, goalNode)) 
 	{
-		nextNode = currentNode;
+		nextNode = temp;
+	}
+	System.out.println(" ("+getPos(nextNode)+") ("+getPos(temp)+") ");
+	temp = new BoardLocation(currentNode.column+1, currentNode.row);
+	if(isValid(currentNode.column, currentNode.row, b, goalNode)) 
+	{
+		nextNode = heuristic(temp, goalNode) > heuristic(nextNode, goalNode)
+				? nextNode : temp;
 	}
 	System.out.println(" ("+getPos(nextNode)+") ("+getPos(temp)+") ");
 	//node = new BoardLocation(tempNode.column-1, tempNode.row);
