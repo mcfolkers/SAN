@@ -239,9 +239,10 @@ static BoardLocation applyHeuristic(BoardLocation currentNode, BoardLocation goa
 	return nextNode;
 }
 
-//static BoardLocation applyBetterHeuristic(BoardLocation currentNode, BoardLocation goalNode, ChessBoard b) {
-//	
-//}
+static BoardLocation applyBetterHeuristic(BoardLocation currentNode, DistanceMatrix dm) {
+	dm.smallestPositiveNeighbourValue(currentNode.row, currentNode.column);
+	return new BoardLocation(getPos(dm.neighbourCol, dm.neighbourRow));
+}
 static boolean isParallel(BoardLocation currentNode, BoardLocation savedNode) {
 	return (currentNode.column == savedNode.column || currentNode.row == savedNode.row);
 }
@@ -275,18 +276,19 @@ static Vector<BoardLocation> getPlannedPath(String from, String to, ChessBoard b
 	BoardLocation prevNode = new BoardLocation(from);
 	//as long as the node isn't pathed to the from node
 	
-	System.out.println("spnv: "+dm.smallestPositiveNeighbourValue(currentNode.row, currentNode.column));
-	System.out.println("n-col: "+dm.neighbourCol+"	n-row: "+dm.neighbourRow);
-	currentNode = new BoardLocation(getPos(dm.neighbourCol, dm.neighbourRow));
-	System.out.println("spnv: "+dm.smallestPositiveNeighbourValue(currentNode.row, currentNode.column));
-	System.out.println("n-col: "+dm.neighbourCol+"	n-row: "+dm.neighbourRow);
-	currentNode = new BoardLocation(getPos(dm.neighbourCol, dm.neighbourRow));
-	System.out.println("spnv: "+dm.smallestPositiveNeighbourValue(currentNode.row, currentNode.column));
-	System.out.println("n-col: "+dm.neighbourCol+"	n-row: "+dm.neighbourRow);
+	//System.out.println("spnv: "+dm.smallestPositiveNeighbourValue(currentNode.row, currentNode.column));
+	//System.out.println("n-col: "+dm.neighbourCol+"	n-row: "+dm.neighbourRow);
+	//currentNode = new BoardLocation(getPos(dm.neighbourCol, dm.neighbourRow));
+	//System.out.println("spnv: "+dm.smallestPositiveNeighbourValue(currentNode.row, currentNode.column));
+	//System.out.println("n-col: "+dm.neighbourCol+"	n-row: "+dm.neighbourRow);
+	//currentNode = new BoardLocation(getPos(dm.neighbourCol, dm.neighbourRow));
+	//System.out.println("spnv: "+dm.smallestPositiveNeighbourValue(currentNode.row, currentNode.column));
+	//System.out.println("n-col: "+dm.neighbourCol+"	n-row: "+dm.neighbourRow);
 	while(!equals(currentNode, goalNode) && !dm.notPossible(to))
 	{
-		currentNode = applyHeuristic(currentNode, goalNode, b);		  
-				
+		//currentNode = applyHeuristic(currentNode, goalNode, b);
+		currentNode = applyBetterHeuristic(currentNode, dm);
+		
 		if (!isParallel(currentNode, savedNode)) {
 			n.add(savedNode);System.out.print(" "+getPos(savedNode)+" ");
 			savedNode = prevNode;
