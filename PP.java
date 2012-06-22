@@ -303,7 +303,7 @@ static boolean isValid(int x, int y, ChessBoard b)
 		//something like this, if there is no piece then true.
 		String columns = "abcdefgh";
 		 
-		valid = b.hasPiece((columns.charAt(y) +""+ x)) == false ? true : false;
+		valid = b.hasPiece((columns.charAt(y) +""+ (x+1))) == false ? true : false;
 		  
 	}
 	return valid;
