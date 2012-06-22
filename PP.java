@@ -5,6 +5,8 @@ import java.io.*;
 import java.lang.*;
 import java.util.Vector;
 
+import StudentBoardTrans.BoardLocation;
+
 public class PP 
 {
 	private static double SAFE_HEIGHT=200; //default variables
@@ -304,6 +306,7 @@ static Vector<BoardLocation> getPlannedPath(String from, String to, ChessBoard b
 			System.out.println("PREV NODE	: "+getPos(prevNode));
 			return n;
 		}
+		System.out.println("\n ("+getPos(currentNode)+") is not possible?	"+dm.notPossible(to));
 		
 		prevNode = currentNode;
 	}
