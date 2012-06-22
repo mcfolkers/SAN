@@ -286,6 +286,8 @@ static Vector<BoardLocation> getPlannedPath(String from, String to, ChessBoard b
 	//System.out.println("n-col: "+dm.neighbourCol+"	n-row: "+dm.neighbourRow);
 	while(!equals(currentNode, goalNode) && !dm.notPossible(to))
 	{
+		System.out.println("\n ("+getPos(currentNode)+") is not possible?	"+dm.notPossible(getPos(currentNode)));
+		
 		//currentNode = applyHeuristic(currentNode, goalNode, b);
 		currentNode = applyBetterHeuristic(currentNode, dm);
 		
