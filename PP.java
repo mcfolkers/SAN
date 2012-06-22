@@ -284,7 +284,7 @@ static Vector<BoardLocation> getPlannedPath(String from, String to, ChessBoard b
 	//currentNode = new BoardLocation(getPos(dm.neighbourCol, dm.neighbourRow));
 	//System.out.println("spnv: "+dm.smallestPositiveNeighbourValue(currentNode.row, currentNode.column));
 	//System.out.println("n-col: "+dm.neighbourCol+"	n-row: "+dm.neighbourRow);
-	while(!equals(currentNode, goalNode) && !dm.notPossible(to))
+	while(!equals(currentNode, goalNode) && !dm.notPossible(currentNode))
 	{
 		System.out.println("\n ("+getPos(currentNode)+") is not possible?	"+dm.notPossible(getPos(currentNode)));
 		
@@ -306,7 +306,6 @@ static Vector<BoardLocation> getPlannedPath(String from, String to, ChessBoard b
 			System.out.println("PREV NODE	: "+getPos(prevNode));
 			return n;
 		}
-		System.out.println("\n ("+getPos(currentNode)+") is not possible?	"+dm.notPossible(getPos(currentNode)));
 		
 		prevNode = currentNode;
 	}
