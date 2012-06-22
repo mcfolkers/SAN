@@ -1,19 +1,15 @@
-/*
-Filename: IK.java
-
-Description:Java program to determine the positions robot's arms and
-the angles of the robot's joints.
-
-Names:
-Jeroen Serdijn 10203249 serdijn
-Michiel Folkers 10001820 mfolkers
-
-Date: 21 June, 2012
-*/
-
+/**************************************************************
+ *	Filename	:	BoardTrans.java
+ *	Description	:	Java program to determine the coordinates of
+ *					the chessboard.
+ *	Students	:	Jeroen Serdijn 10203249 serdijn
+ *				:	Michiel Folkers 10001820 mfolkers
+ *	Date		:	21 June, 2012
+ *	Using		:
+ *http://introcs.cs.princeton.edu/java/95linear/Matrix.java.html
+ ***************************************************************/
 import java.io.*;
 import java.lang.*;
-
 class BoardTrans
 {
   	/*BoardTrans takes one optional argument, specifying the position on the
@@ -282,58 +278,64 @@ class StudentBoardTrans
 			{
 				 0.0, 0.0, 1.0
 			} 
-		}
-		;
+		};
 		Matrix xyz = new Matrix(m);
 		Matrix rot = new Matrix(r_z);
 		Matrix rotated_xyz = rot.times(xyz);
 
     	Point xyz_point = new Point();
-	xyz_point.x = (-1) * rotated_xyz.data[0][0] + this.getCoordX();
-	xyz_point.y = rotated_xyz.data[1][0]+this.getCoordY();
-	xyz_point.z = rotated_xyz.data[2][0]+this.getCoordZ();
-	return(xyz_point);
+    	xyz_point.x = (-1) * rotated_xyz.data[0][0] + this.getCoordX();
+    	xyz_point.y = rotated_xyz.data[1][0]+this.getCoordY();
+    	xyz_point.z = rotated_xyz.data[2][0]+this.getCoordZ();
+    	return(xyz_point);
   	}
 
-  	class BoardLocation
+  	public Point getLoc() {
+		return loc;
+	}
+	public void setLoc(Point loc) {
+		this.loc = loc;
+	}
+
+	class BoardLocation
 	{
-    		public int row;
-    		public int column;
+  		public int row;
+    	public int column;
       
 		public BoardLocation() 
 		{
 		}
 
-	public BoardLocation(int column, int row) 
-	{
+		public BoardLocation(int column, int row) 
+		{
     		this.row = row;
-		this.column = column;
-	}
-	public BoardLocation(String loc) 
-	{
-		this.column = this.getCol(loc.charAt(0));
-		this.row = this.getRow(loc.charAt(1));
-	}
+    		this.column = column;
+		}
+		public BoardLocation(String loc) 
+		{
+			this.column = this.getCol(loc.charAt(0));
+			this.row = this.getRow(loc.charAt(1));
+		}
 
-	public boolean equals(BoardLocation b) {
-		return (this.column == b.column && this.row == b.row);
-	}
-	public int getCol(char col) 
-	{
-		String columns = "abcdefgh";
-		return columns.indexOf(col);
-  	}
-	public int getRow(char row) 
-	{
-		return Integer.parseInt(String.valueOf(row))-1;
-	}
-	public String getPos() {
-		return this.getPos(this.column, this.row);
-	}
-	public String getPos(int column, int row) 
-	{
-		String columns = "abcdefgh";
-		return (columns.charAt(column) +""+ row);
-	}
+		public boolean equals(BoardLocation b) {
+			return (this.column == b.column && this.row == b.row);
+		}
+		public int getCol(char col) 
+		{
+			String columns = "abcdefgh";
+			return columns.indexOf(col);
+	  	}
+		public int getRow(char row) 
+		{
+			return Integer.parseInt(String.valueOf(row))-1;
+		}
+		public String getPos() {
+			return this.getPos(this.column, this.row);
+		}
+
+		public String getPos(int column, int row) {
+			String columns = "abcdefgh";
+			return (columns.charAt(column) + "" + row);
+		}
 	}
 }
