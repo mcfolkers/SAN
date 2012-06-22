@@ -274,7 +274,7 @@ static Vector<BoardLocation> getPlannedPath(String from, String to, ChessBoard b
 		
 		prevNode = currentNode;
 	}
-	System.out.println("END PATH");
+	System.out.println("\nEND PATH");
 	return n;//positions;
 }
   
