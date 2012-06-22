@@ -1,5 +1,7 @@
 import java.lang.Integer;
 
+import StudentBoardTrans.BoardLocation;
+
 /**
  * This class it implements a distance matrix. It can be used
  * to make a distance transform of the chess board locations.
@@ -28,6 +30,7 @@ public class DistanceMatrix {
    */
     public int neighbourCol;
 
+    int[] vals;
 
 
 
@@ -133,6 +136,10 @@ public class DistanceMatrix {
 	    values[3] = distanceMatrix[row][col-1];
 	else
 	    values[3] = OCCUPIED;
+	
+	//Save values array for path testing
+	vals = new int[4];
+	vals = values;
 
 	/* find the smallest positive now*/
 	smallestValue = HAVENT_FOUND_IT;
@@ -179,12 +186,24 @@ public class DistanceMatrix {
     public boolean notPossible(String target){
 	BoardLocation t = new BoardLocation(target);
 
-	if(distanceMatrix[t.row][t.column] == UNREACHABLE || distanceMatrix[t.row][t.column] == OCCUPIED) 
+
+	if(distanceMatrix[t.row][t.column] == UNREACHABLE ||
+			blocked(t.row, t.column)) 
 	    return(true);
 	else
 	    return(false);
     }
-
+    public boolean blocked(int x, int y){
+    	int invalid = 0;
+    	for (int i = 0; i < vals.length; i++) {
+    		if (vals[i] == OCCUPIED || vals[i] == UNREACHABLE)
+    			invalid++;
+    	}
+    	if (invalid == 4)
+    		return(true);
+    	else
+    		return(false);
+    }
 
   /**
    * This method generates the distance transform. It sets the 
