@@ -237,7 +237,7 @@ static boolean equals(BoardLocation b, BoardLocation c) {
 static String getPos(BoardLocation b) 
 {
 	String columns = "abcdefgh";
-	return (columns.charAt(b.column) +""+ b.row+1);
+	return (columns.charAt(b.column) +""+ (b.row+1));
 }
 static Vector<BoardLocation> getPlannedPath(String from, String to, ChessBoard b) 
 {
