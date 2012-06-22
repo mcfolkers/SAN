@@ -188,7 +188,11 @@ class StudentBoardTrans
 		}
 		return side;
 	}
-  
+	
+	public Point toCartesian(String position)
+	  {
+		return this.toCartesian(boardLocation.getCol(position.charAt(0)), position.charAt(1));
+	  }
 	public Point toCartesian(int column, int row)
   {
     // write this function

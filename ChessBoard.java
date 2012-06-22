@@ -58,4 +58,14 @@ public class ChessBoard {
 		return null;
 	}
 
+	public static void getHeight(int x, int y) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public static boolean hasPiece(int x, int y) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

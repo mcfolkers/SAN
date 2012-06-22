@@ -21,4 +21,9 @@ public class ChessPiece {
 		return 0;
 	}
 
+	public static boolean getPiece(int column, int row) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

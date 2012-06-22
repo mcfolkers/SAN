@@ -8,4 +8,8 @@ public class BoardLocation {
 		// TODO Auto-generated constructor stub
 	}
 
+	public BoardLocation(int column2, int row2) {
+		// TODO Auto-generated constructor stub
+	}
+
 }

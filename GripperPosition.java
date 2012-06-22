@@ -12,4 +12,5 @@ public class GripperPosition {
 		// TODO Auto-generated method stub
 		
 	}
+
 }

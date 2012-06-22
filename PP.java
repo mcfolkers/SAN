@@ -286,7 +286,7 @@ temp.z = (LOW_HEIGHT /2) + (b.getHeight(to) /2);
 
 //9
 try{
-temp.z = b.getHeight(to) /2;
+temp.z = (b.getHeight(to) /3) *2;
 } catch(ChessBoard.NoPieceAtPositionException e) {}
  g.add(new GripperPosition(garbage, b.theta,OPEN_GRIP ));
 
@@ -312,9 +312,132 @@ temp.z = SAFE_HEIGHT;
 	
 */	
   }
+  static Vector<BoardLocation> getPlannedPath(String from, String to, ChessBoard b) {
+	  //start from goal node b
+	  BoardLocation start = new BoardLocation(from);
+	  BoardLocation end = new BoardLocation(to);
+	  BoardLocation node = new BoardLocation(end.column, end.row);
+	  BoardLocation bestNode = end;
+	  BoardLocation prevNode = bestNode;
+	  Vector<BoardLocation> n = new Vector<BoardLocation>(); 
+	  //as long as the node isn't pathed to the from node
+	  while(bestNode.column != start.column && bestNode.row != start.row){
+		  //
+		  node = new BoardLocation(bestNode.column+1, bestNode.row);
+		  if(isValid(node.column, node.row, b)) {
+			  bestNode = diff(node.column, start.column) + diff(node.row, start.row) >
+			  diff(bestNode.column, start.column) + diff(bestNode.row, start.row) ?
+					  bestNode : node;
+		  }
+		  node = new BoardLocation(bestNode.column-1, bestNode.row);
+		  if(isValid(node.column, node.row,b )) {
+			  bestNode = diff(node.column, start.column) + diff(node.row, start.row) >
+			  diff(bestNode.column, start.column) + diff(bestNode.row, start.row) ?
+					  bestNode : node;
+		  }
+		  node = new BoardLocation(bestNode.column, bestNode.row+1);
+		  if(isValid(node.column, node.row, b)) {
+			  bestNode = diff(node.column, start.column) + diff(node.row, start.row) >
+			  diff(bestNode.column, start.column) + diff(bestNode.row, start.row) ?
+					  bestNode : node;
+		  }
+		  node = new BoardLocation(bestNode.column+1, bestNode.row-1);
+		  if(isValid(node.column, node.row, b)) {
+			  bestNode = diff(node.column, start.column) + diff(node.row, start.row) >
+			  diff(bestNode.column, start.column) + diff(bestNode.row, start.row) ?
+					  bestNode : node;
+		  }
+		  
+		  if(bestNode.column != prevNode.column && bestNode.row != prevNode.row){
+			  //new pos
+			  n.add(bestNode);
+			  prevNode = bestNode;
+		  }
+	  }
+	  /*
+	  double [][] grid = {	{0,0,0,0,0,0,0,0},
+			  				{0,0,0,0,0,0,0,0},
+			  				{0,0,0,0,0,0,0,0},
+			  				{0,0,0,0,0,0,0,0},
+			  				{0,0,0,0,0,0,0,0},
+			  				{0,0,0,0,0,0,0,0},
+			  				{0,0,0,0,0,0,0,0},
+			  				{0,0,0,0,0,0,0,0}};
+	  */
+	  //Point c;
+	  //Point[] positions = {c,c,c};
+	  return n;//positions;
+  }
   
+ // static boolean isBetter(BoardLocation a, BoardLocation b) {
+  
+  static boolean isValid(int x, int y, ChessBoard b) {
+	  boolean valid = false;
+	  if (x < 8 && x > -1 && y < 8 && y > -1) {
+		  
+		  //TODO: any function to test if a chesspiece is there or not
+		  //something like this, if there is no piece then true.
+		  valid = ChessBoard.hasPiece(x, y) == false ? true : false;
+		  
+	  }
+	  return valid;
+  }
+  static double diff(double a, double b) {
+	  return Math.abs(a-b);
+  }
   private static void lowPath(String from, String to, 
           ChessBoard b, Vector<GripperPosition> p) {
+	  StudentBoardTrans sbt = new StudentBoardTrans(from);
+	  Point f = sbt.toCartesian(from);
+	  Point t = sbt.toCartesian(to);
+	  
+	  Point temp = sbt.toCartesian(sbt.boardLocation.column,sbt.boardLocation.row);
+	//1
+	  
+	  
+	//2
+	  temp.z = LOW_HEIGHT;
+	   p.add(new GripperPosition(temp, b.theta,OPEN_GRIP ));
+
+	  //3
+	  try {
+	  temp.z = b.getHeight(from) /2;
+	  } catch(ChessBoard.NoPieceAtPositionException e) {}
+	   p.add(new GripperPosition(temp, b.theta,OPEN_GRIP ));
+
+	  //4
+	  try{
+	  temp.z = b.getHeight(from) /2;
+	  } catch(ChessBoard.NoPieceAtPositionException e) {}
+	   p.add(new GripperPosition(temp, b.theta,CLOSED_GRIP ));
+	 // Point[] positions = getPlannedPath(from, to);
+	  Vector<BoardLocation> n = new Vector<BoardLocation>(getPlannedPath(from, to, b));
+	  //up/down
+	  //open/close
+	  for (int i = 0; i < n.size(); i++) {
+		  p.add(new GripperPosition(sbt.toCartesian(n.elementAt(i).column, n.elementAt(i).row), b.theta, CLOSED_GRIP));
+	  }
+	  //up/down
+	  //open/close
+	  sbt = new StudentBoardTrans(to);
+	  temp = sbt.toCartesian(sbt.boardLocation.column,sbt.boardLocation.row);
+	//7
+	  try{
+	  temp.z = LOW_HEIGHT + (b.getHeight(to) / 2);
+	  } catch(ChessBoard.NoPieceAtPositionException e) {}
+	   p.add(new GripperPosition(temp, b.theta,CLOSED_GRIP ));
+
+	  //8
+	  try{
+	  temp.z = (LOW_HEIGHT /2) + (b.getHeight(to) /2);
+	  } catch(ChessBoard.NoPieceAtPositionException e) {}
+	   p.add(new GripperPosition(temp, b.theta,CLOSED_GRIP ));
+
+	  //9
+	  try{
+	  temp.z = b.getHeight(to) /2;
+	  } catch(ChessBoard.NoPieceAtPositionException e) {}
+	   p.add(new GripperPosition(temp, b.theta,OPEN_GRIP ));
 	  /*
 	    //p.add(toSafeHeight(b.toCartesian(from), b.theta));
 	    //path plan
