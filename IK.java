@@ -69,12 +69,12 @@ private static void armJointCalculation(Point wristCoords,
 
 	/*after obtaining the correct values of c2 and s2, we can calculate the
 	Jointvalues for the shoulder and elbow*/
-	j.shoulder = Math.toDegrees( ( Math.atan2(x,y) - 
+	j.shoulder = Math.toDegrees( ( Math.atan2(y,x) - 
 	( Math.atan2( 253.5 * s2,  253.5  + 253.5 * c2 ) ) ) );
 
 	/*using the Jointvalues of the shoulder and the elbow, we can calculate
 	the  values of the correct Jointvalue of the yaw*/
-	j.elbow = Math.toDegrees(Math.atan2(s2,c2)); 
+	j.elbow = Math.toDegrees(Math.atan2(c2,s2)); 
 	j.yaw = j.elbow / -2 - j.shoulder;
 }
 
