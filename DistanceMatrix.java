@@ -1,7 +1,5 @@
 import java.lang.Integer;
 
-import StudentBoardTrans.BoardLocation;
-
 /**
  * This class it implements a distance matrix. It can be used
  * to make a distance transform of the chess board locations.
