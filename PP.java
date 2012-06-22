@@ -248,6 +248,12 @@ static boolean isParallel(BoardLocation currentNode, BoardLocation savedNode) {
 static boolean equals(BoardLocation b, BoardLocation c) {
 	return (c.column == b.column && c.row == b.row);
 }
+
+static String getPos(int column, int row)
+{
+	String columns = "abcdefgh";
+	return (columns.charAt(column) +""+ (row+1));
+}
 static String getPos(BoardLocation b) 
 {
 	String columns = "abcdefgh";
@@ -268,11 +274,13 @@ static Vector<BoardLocation> getPlannedPath(String from, String to, ChessBoard b
 	BoardLocation savedNode = new BoardLocation(from);
 	BoardLocation prevNode = new BoardLocation(from);
 	//as long as the node isn't pathed to the from node
-	System.out.println("n-col: "+dm.neighbourCol+"	n-row: "+dm.neighbourRow);
+	
 	System.out.println("spnv: "+dm.smallestPositiveNeighbourValue(currentNode.row, currentNode.column));
 	System.out.println("n-col: "+dm.neighbourCol+"	n-row: "+dm.neighbourRow);
+	currentNode = new BoardLocation(getPos(dm.neighbourCol, dm.neighbourRow));
 	System.out.println("spnv: "+dm.smallestPositiveNeighbourValue(currentNode.row, currentNode.column));
 	System.out.println("n-col: "+dm.neighbourCol+"	n-row: "+dm.neighbourRow);
+	currentNode = new BoardLocation(getPos(dm.neighbourCol, dm.neighbourRow));
 	System.out.println("spnv: "+dm.smallestPositiveNeighbourValue(currentNode.row, currentNode.column));
 	System.out.println("n-col: "+dm.neighbourCol+"	n-row: "+dm.neighbourRow);
 	while(!equals(currentNode, goalNode) && !dm.notPossible(to))
