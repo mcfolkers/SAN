@@ -193,84 +193,83 @@ private static void moveToGarbage(String to, ChessBoard b, Vector<GripperPositio
 	garbage.z = SAFE_HEIGHT;
 	g.add(new GripperPosition(garbage, b.theta,OPEN_GRIP ));
 }
+static double heuristic(BoardLocation node, BoardLocation goal) {
+	return diff(node.column, goal.column) + diff(node.row, goal.row);
+}
+static BoardLocation applyHeuristic(BoardLocation currentNode, BoardLocation goalNode, ChessBoard b) {
+	BoardLocation nextNode = new BoardLocation(currentNode.column, currentNode.row);
+	
+	// if current node col+1 is valid, that's the temp next node.
+	BoardLocation temp = new BoardLocation(currentNode.column+1, currentNode.row);
+	if(isValid(temp.column, temp.row, b, goalNode)) 
+	{
+		nextNode = currentNode;
+	}
+	//node = new BoardLocation(tempNode.column-1, tempNode.row);
+	temp = new BoardLocation(currentNode.column, currentNode.row+1);
+	if(isValid(currentNode.column, currentNode.row, b, goalNode)) 
+	{
+		nextNode = heuristic(temp, goalNode) > heuristic(nextNode, goalNode)
+				? nextNode : temp;
+	}
+	temp = new BoardLocation(currentNode.column-1, currentNode.row);
+	if(isValid(currentNode.column, currentNode.row, b, goalNode)) 
+	{
+		nextNode = heuristic(temp, goalNode) > heuristic(nextNode, goalNode)
+				? nextNode : temp;
+	}
+	temp = new BoardLocation(currentNode.column, currentNode.row-1);
+	if(isValid(currentNode.column, currentNode.row, b, goalNode)) 
+	{
+		nextNode = heuristic(temp, goalNode) > heuristic(nextNode, goalNode)
+				? nextNode : temp;
+	}
+	//return lowest value nextNode or the currentNode
+	return nextNode;
+}
 
-
+static boolean isParallel(BoardLocation currentNode, BoardLocation savedNode) {
+	return (currentNode.column == savedNode.column || currentNode.row == savedNode.row);
+}
 static Vector<BoardLocation> getPlannedPath(String from, String to, ChessBoard b) 
 {
+	System.out.println("IN PATH");
 	//start from goal node b
-	BoardLocation start = new BoardLocation(to);
-	BoardLocation end = new BoardLocation(from);
-	BoardLocation node = new BoardLocation(end.column, end.row);
-	BoardLocation bestNode = end;
-	BoardLocation prevNode = bestNode;
-	BoardLocation tempNode = prevNode;
 	Vector<BoardLocation> n = new Vector<BoardLocation>();
 	DistanceMatrix dm = new DistanceMatrix();
+	
+	BoardLocation goalNode = new BoardLocation(to);
+	BoardLocation currentNode = new BoardLocation(from);
+	BoardLocation savedNode = new BoardLocation(from);
+	BoardLocation prevNode = new BoardLocation(from);
 	//as long as the node isn't pathed to the from node
-	int i = 0;
-	while((bestNode.column != start.column || bestNode.row != start.row) && !dm.notPossible(to) && i < 100)
-	{ i++;
-		node = new BoardLocation(tempNode.column+1, tempNode.row);
-		if(isValid(node.column, node.row, b)) 
-		{
-			bestNode = diff(node.column, start.column) + diff(node.row, start.row) >
-			diff(bestNode.column, start.column) + diff(bestNode.row, start.row) ?
-			bestNode : node;
+	
+	while(!currentNode.equals(goalNode) && !dm.notPossible(to))
+	{
+		currentNode = applyHeuristic(currentNode, goalNode, b);		  
+				
+		if (!isParallel(currentNode, savedNode)) {
+			n.add(savedNode);System.out.print(" "+savedNode+" ");
+			savedNode = prevNode;
 		}
-		node = new BoardLocation(tempNode.column-1, tempNode.row);
-		if(isValid(node.column, node.row,b )) 
-		{
-			bestNode = diff(node.column, start.column) + diff(node.row, start.row) >
-			diff(bestNode.column, start.column) + diff(bestNode.row, start.row) ?
-			bestNode : node;
+		if (currentNode.equals(goalNode)) {
+			n.add(savedNode);System.out.print(" "+savedNode+" ");
+			n.add(goalNode);System.out.print(" "+goalNode+" ");
 		}
-		node = new BoardLocation(tempNode.column, tempNode.row+1);
-		if(isValid(node.column, node.row, b)) 
-		{
-			bestNode = diff(node.column, start.column) + diff(node.row, start.row) >
-			diff(bestNode.column, start.column) + diff(bestNode.row, start.row) ?
-			bestNode : node;
+		if (currentNode.equals(prevNode)) {
+			System.out.println("CANT FIND PATH");
 		}
-		node = new BoardLocation(tempNode.column, tempNode.row-1);
-		if(isValid(node.column, node.row, b)) 
-		{
-			bestNode = diff(node.column, start.column) + diff(node.row, start.row) >
-			diff(bestNode.column, start.column) + diff(bestNode.row, start.row) ?
-			bestNode : node;
-			//if ((diff(node.column, start.column) == 1 || diff(node.row, start.row) == 1) && (node.column != start.column || node.row != start.row)) bestNode
-		}
-		  
-		if((bestNode.column != prevNode.column && prevNode.row != bestNode.row))
-		{System.out.println("in condition 1");
-			//new pos
-			n.add(prevNode);
-			prevNode = bestNode;
-		}
-		if(bestNode.column != start.column && bestNode.row == start.row && diff(bestNode.column, start.column)==1){System.out.println("in condition 2");
-			n.add(bestNode);
-		} else if (bestNode.column == start.column && bestNode.row != start.row && diff(bestNode.row, start.row)==1){System.out.println("in condition 3");
-			n.add(bestNode);
-		}System.out.println("END");
-		//if(bestNode.column == start.column && bestNode == start.column)
-		//{
-		//	n.add(bestNode);
-		//}
-		tempNode = bestNode;
-		//System.out.println(bestNode.column+","+bestNode.row);
+		
+		prevNode = currentNode;
 	}
-	if(bestNode.column != start.column && bestNode.row == start.row && diff(bestNode.column, start.column)==1){
-			System.out.println("in condition 2");
-			n.add(bestNode);
-		} else if (bestNode.column == start.column && bestNode.row != start.row && diff(bestNode.row, start.row)==1){
-			System.out.println("in condition 3");
-			n.add(bestNode);
-		}
-System.out.println("IN PATH");
+	System.out.println("END PATH");
 	return n;//positions;
 }
   
 // static boolean isBetter(BoardLocation a, BoardLocation b) {
-  
+static boolean isValid(int column, int row, ChessBoard b, BoardLocation goal) {
+	return isValid(column, row, b) || (column == goal.column && row == goal.row);
+}
 static boolean isValid(int x, int y, ChessBoard b) 
 {
 	boolean valid = false;

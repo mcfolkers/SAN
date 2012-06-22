@@ -316,6 +316,9 @@ class StudentBoardTrans
 		this.row = this.getRow(loc.charAt(1));
 	}
 
+	public boolean equals(BoardLocation b) {
+		return (this.column == b.column && this.row == b.row);
+	}
 	public int getCol(char col) 
 	{
 		String columns = "abcdefgh";
