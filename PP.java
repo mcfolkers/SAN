@@ -365,33 +365,33 @@ ChessBoard b, Vector<GripperPosition> p)
 	if (n.size() == 0)
 		return false;
 
-	//1 -- FROM -- SEMI-LOW -- OPEN
+	//1 -- FROM -- UP-HIGH -- OPEN
+	temp.z = SAFE_HEIGHT;
+	p.add(new GripperPosition(temp, b.theta,OPEN_GRIP ));
+	//2 -- FROM -- SEMI-LOW -- OPEN
 	temp.z = LOW_HEIGHT + safePieceHeight;
 	p.add(new GripperPosition(temp, b.theta,OPEN_GRIP ));
-	//2 -- FROM -- GRIP-LOW -- OPEN
+	//3 -- FROM -- GRIP-LOW -- OPEN
 	temp.z = safePieceHeight;
 	p.add(new GripperPosition(temp, b.theta,OPEN_GRIP ));
-	//3 -- FROM -- GRIP-LOW -- CLOSED
+	//4 -- FROM -- GRIP-LOW -- CLOSED
 	p.add(new GripperPosition(temp, b.theta,CLOSED_GRIP ));
-	//4 -- PATH -- SEMI-LOW -- CLOSED
+	//5 -- PATH -- SEMI-LOW -- CLOSED
 	for (int i = 0; i < n.size(); i++) 
 	{
 		temp = sbt.toCartesian(n.elementAt(i).column, n.elementAt(i).row);
 		temp.z = LOW_HEIGHT + safePieceHeight;
 		p.add(new GripperPosition(temp, b.theta, CLOSED_GRIP));
 	}	
-	//5 -- TO -- SEMI-LOW -- CLOSED
+	//6 -- TO -- GRIP-LOW -- CLOSED
 	sbt = new StudentBoardTrans(to);
 	temp = sbt.toCartesian(sbt.boardLocation.column,sbt.boardLocation.row);
-	temp.z = LOW_HEIGHT + safePieceHeight;
-	p.add(new GripperPosition(temp, b.theta,CLOSED_GRIP ));
-	//6 -- TO -- GRIP-LOW -- CLOSED
 	temp.z = safePieceHeight;
 	p.add(new GripperPosition(temp, b.theta,CLOSED_GRIP ));
 	//7 -- TO -- GRIP-LOW -- OPEN
 	p.add(new GripperPosition(temp, b.theta,OPEN_GRIP ));
-	//8 -- TO -- SEMI-LOW -- OPEN	
-	temp.z = LOW_HEIGHT + safePieceHeight;
+	//8 -- TO -- UP-HIGH -- OPEN	
+	temp.z = SAFE_HEIGHT;
 	p.add(new GripperPosition(temp, b.theta,OPEN_GRIP ));
 	
 	//return success
