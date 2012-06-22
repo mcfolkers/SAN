@@ -115,6 +115,9 @@ class StudentBoardTrans
   	public BoardLocation boardLocation;
 	private Point loc;
 
+	public String getPosOut(BoardLocation b) {
+		return this.boardLocation.getPos(b.column, b.row);
+	}
   	public StudentBoardTrans(String position)
   	{
     		board = new ChessBoard();
