@@ -5,8 +5,6 @@ import java.io.*;
 import java.lang.*;
 import java.util.Vector;
 
-import StudentBoardTrans.BoardLocation;
-
 public class PP 
 {
 	private static double SAFE_HEIGHT=200; //default variables
