@@ -239,9 +239,9 @@ static BoardLocation applyHeuristic(BoardLocation currentNode, BoardLocation goa
 	return nextNode;
 }
 
-static BoardLocation applyBetterHeuristic(BoardLocation currentNode, BoardLocation goalNode, ChessBoard b) {
-	
-}
+//static BoardLocation applyBetterHeuristic(BoardLocation currentNode, BoardLocation goalNode, ChessBoard b) {
+//	
+//}
 static boolean isParallel(BoardLocation currentNode, BoardLocation savedNode) {
 	return (currentNode.column == savedNode.column || currentNode.row == savedNode.row);
 }
