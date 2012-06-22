@@ -324,6 +324,9 @@ class StudentBoardTrans
 	{
 		return Integer.parseInt(String.valueOf(row))-1;
 	}
+	public String getPos() {
+		return this.getPos(this.column, this.row);
+	}
 	public String getPos(int column, int row) 
 	{
 		String columns = "abcdefgh";

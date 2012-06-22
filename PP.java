@@ -193,32 +193,32 @@ private static void moveToGarbage(String to, ChessBoard b, Vector<GripperPositio
 	garbage.z = SAFE_HEIGHT;
 	g.add(new GripperPosition(garbage, b.theta,OPEN_GRIP ));
 }
-static double heuristic(BoardLocation node, BoardLocation goal) {
+static double heuristic(StudentBoardTrans.BoardLocation node, StudentBoardTrans.BoardLocation goal) {
 	return diff(node.column, goal.column) + diff(node.row, goal.row);
 }
-static BoardLocation applyHeuristic(BoardLocation currentNode, BoardLocation goalNode, ChessBoard b) {
+static StudentBoardTrans.BoardLocation applyHeuristic(StudentBoardTrans.BoardLocation currentNode, StudentBoardTrans.BoardLocation goalNode, ChessBoard b) {
 	BoardLocation nextNode = new BoardLocation(currentNode.column, currentNode.row);
 	
 	// if current node col+1 is valid, that's the temp next node.
-	BoardLocation temp = new BoardLocation(currentNode.column+1, currentNode.row);
+	StudentBoardTrans.BoardLocation temp = new StudentBoardTrans.BoardLocation(currentNode.column+1, currentNode.row);
 	if(isValid(temp.column, temp.row, b, goalNode)) 
 	{
 		nextNode = currentNode;
 	}
 	//node = new BoardLocation(tempNode.column-1, tempNode.row);
-	temp = new BoardLocation(currentNode.column, currentNode.row+1);
+	temp = new StudentBoardTrans.BoardLocation(currentNode.column, currentNode.row+1);
 	if(isValid(currentNode.column, currentNode.row, b, goalNode)) 
 	{
 		nextNode = heuristic(temp, goalNode) > heuristic(nextNode, goalNode)
 				? nextNode : temp;
 	}
-	temp = new BoardLocation(currentNode.column-1, currentNode.row);
+	temp = new StudentBoardTrans.BoardLocation(currentNode.column-1, currentNode.row);
 	if(isValid(currentNode.column, currentNode.row, b, goalNode)) 
 	{
 		nextNode = heuristic(temp, goalNode) > heuristic(nextNode, goalNode)
 				? nextNode : temp;
 	}
-	temp = new BoardLocation(currentNode.column, currentNode.row-1);
+	temp = new StudentBoardTrans.BoardLocation(currentNode.column, currentNode.row-1);
 	if(isValid(currentNode.column, currentNode.row, b, goalNode)) 
 	{
 		nextNode = heuristic(temp, goalNode) > heuristic(nextNode, goalNode)
@@ -228,20 +228,20 @@ static BoardLocation applyHeuristic(BoardLocation currentNode, BoardLocation goa
 	return nextNode;
 }
 
-static boolean isParallel(BoardLocation currentNode, BoardLocation savedNode) {
+static boolean isParallel(StudentBoardTrans.BoardLocation currentNode, StudentBoardTrans.BoardLocation savedNode) {
 	return (currentNode.column == savedNode.column || currentNode.row == savedNode.row);
 }
-static Vector<BoardLocation> getPlannedPath(String from, String to, ChessBoard b) 
+static Vector<StudentBoardTrans.BoardLocation> getPlannedPath(String from, String to, ChessBoard b) 
 {
 	System.out.println("IN PATH");
 	//start from goal node b
-	Vector<BoardLocation> n = new Vector<BoardLocation>();
+	Vector<StudentBoardTrans.BoardLocation> n = new Vector<StudentBoardTrans.BoardLocation>();
 	DistanceMatrix dm = new DistanceMatrix();
 	
-	BoardLocation goalNode = new BoardLocation(to);
-	BoardLocation currentNode = new BoardLocation(from);
-	BoardLocation savedNode = new BoardLocation(from);
-	BoardLocation prevNode = new BoardLocation(from);
+	StudentBoardTrans.BoardLocation goalNode = new StudentBoardTrans.BoardLocation(to);
+	StudentBoardTrans.BoardLocation currentNode = new StudentBoardTrans.BoardLocation(from);
+	StudentBoardTrans.BoardLocation savedNode = new StudentBoardTrans.BoardLocation(from);
+	StudentBoardTrans.BoardLocation prevNode = new StudentBoardTrans.BoardLocation(from);
 	//as long as the node isn't pathed to the from node
 	
 	while(!currentNode.equals(goalNode) && !dm.notPossible(to))
@@ -253,7 +253,7 @@ static Vector<BoardLocation> getPlannedPath(String from, String to, ChessBoard b
 			savedNode = prevNode;
 		}
 		if (currentNode.equals(goalNode)) {
-			n.add(savedNode);System.out.print(" "+savedNode.column+","+savedNode.row+" ");
+			n.add(savedNode);System.out.print(" "+savedNode.getPos()+" ");
 			n.add(goalNode);System.out.print(" "+goalNode.column+","+goalNode.row+" ");
 		}
 		if (currentNode.equals(prevNode)) {
@@ -303,7 +303,7 @@ ChessBoard b, Vector<GripperPosition> p)
 	
 	//FIND A PATH
 	Point temp = sbt.toCartesian(sbt.boardLocation.column,sbt.boardLocation.row);
-	Vector<BoardLocation> n = new Vector<BoardLocation>(getPlannedPath(from, to, b));
+	Vector<StudentBoardTrans.BoardLocation> n = new Vector<StudentBoardTrans.BoardLocation>(getPlannedPath(from, to, b));
 	
 	//IF NO PATH THEN FAIL
 	if (n.size() == 0)
