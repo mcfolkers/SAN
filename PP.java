@@ -256,8 +256,6 @@ static Vector<BoardLocation> getPlannedPath(String from, String to, ChessBoard b
 	//start from goal node b
 	Vector<BoardLocation> n = new Vector<BoardLocation>();
 	DistanceMatrix dm = new DistanceMatrix();
-	dm.init(b);
-	dm.print();
 	dm.distanceTransform(b, to);
 	dm.print();
 	
