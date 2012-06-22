@@ -1,5 +1,7 @@
 import java.lang.Integer;
 
+import StudentBoardTrans.BoardLocation;
+
 /**
  * This class it implements a distance matrix. It can be used
  * to make a distance transform of the chess board locations.
@@ -179,7 +181,7 @@ public class DistanceMatrix {
     public boolean notPossible(String target){
 	BoardLocation t = new BoardLocation(target);
 
-	if(distanceMatrix[t.row][t.column] == UNREACHABLE)
+	if(distanceMatrix[t.row][t.column] == UNREACHABLE || distanceMatrix[t.row][t.column] == OCCUPIED) 
 	    return(true);
 	else
 	    return(false);
