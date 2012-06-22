@@ -260,7 +260,7 @@ static Vector<BoardLocation> getPlannedPath(String from, String to, ChessBoard b
 			n.add(savedNode);System.out.print(" "+getPos(savedNode)+" ");
 			savedNode = prevNode;
 		}
-		if (currentNode.equals(goalNode)) {
+		if (equals(currentNode, goalNode)) {
 			n.add(savedNode);System.out.print(" "+getPos(savedNode)+" ");
 			n.add(goalNode);System.out.print(" "+getPos(goalNode)+" ");
 		}
