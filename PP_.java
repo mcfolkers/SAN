@@ -1,14 +1,5 @@
-/*
-Filename: PP.java
 
-Description:Java program to determine the correct Path of the piece
-
-Names:
-Jeroen Serdijn 10203249 serdijn
-Michiel Folkers 10001820 mfolkers
-
-Date: 21 June, 2012
-*/
+// Jeroen Serdijn & Michiel Folkers
 
 import java.io.*;
 import java.lang.*;
@@ -78,28 +69,24 @@ public class PP
     /* after done write the gripper positions */
     GripperPosition.write(p);
 	}
-	static double getGripHeight(String pos, ChessBoard b) 
-	{
+static double getGripHeight(String pos, ChessBoard b) {
 
-		double height = 0.0;
-		try 
-			{ 
-				//Gripping height is two thirds of the piece to be gripped
-				height = b.getHeight(pos) - (b.getHeight(pos) / 3);
-			} 
-			catch (ChessBoard.NoPieceAtPositionException e) 
-			{
-				System.out.println(e);
-				System.exit(1);
-			}
-			return height;
+	double height = 0.0;
+	try { //Gripping height is two thirds of the piece to be gripped
+		height = b.getHeight(pos) - (b.getHeight(pos) / 3);
+	} catch (ChessBoard.NoPieceAtPositionException e) {
+		System.out.println(e);
+		System.exit(1);
 	}
+	return height;
+}
 private static void highPath(String from, String to, 
 ChessBoard b, Vector<GripperPosition> p) 
 {
-	System.out.println("Low Path not possible, using high path instead");
+	System.out.println("**** In high path");
 
 	StudentBoardTrans studentBoardTrans = new StudentBoardTrans(b, from);
+	
 	Point temp = studentBoardTrans.getPositionCoords();
 	
 	//The safest height for placing a gripping is always grip/piece height and height of surface
@@ -141,7 +128,7 @@ ChessBoard b, Vector<GripperPosition> p)
   
 static GripperPosition openGrip(Point point, double angle) 
 {
-	return (new GripperPosition(point, angle, OPEN_GRIP));
+  return (new GripperPosition(point, angle, OPEN_GRIP));
 }
 
 static GripperPosition closeGrip(Point point, double angle) 
